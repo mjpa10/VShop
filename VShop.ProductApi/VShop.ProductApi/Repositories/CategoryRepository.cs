@@ -28,6 +28,11 @@ public class CategoryRepository : ICategoryRepository
         return await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
     }
 
+    public async Task<Category> GetByName(string name)
+    {
+        return await _context.Categories.Where(c => c.Name == name).FirstOrDefaultAsync();
+    }
+
     public async Task<Category> Create(Category category)
     {
         _context.Categories.Add(category);
