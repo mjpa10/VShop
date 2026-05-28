@@ -38,7 +38,7 @@ public class ProductService : IProductService
     {
         var productEntity = _mapper.Map<Product>(productDto);
         await _productRepository.Create(productEntity);
-        productDto.Id = productEntity.CategoryId;
+        productDto.Id = productEntity.Id;
     }
 
     public async Task UpdateProduct(ProductDTO productDto)
