@@ -8,10 +8,10 @@ namespace VShop.ProductApi.Services;
 
 public class CategoryService : ICategoryService
 {
-    private CategoryRepository _categoryRepository;
+    private ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
 
-    public CategoryService(CategoryRepository categoryRepository, IMapper mapper)
+    public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
