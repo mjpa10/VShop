@@ -15,17 +15,17 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<Product>> GetAll()
     {
-        return await _context.Products.ToListAsync();
+        return await _context.Products.Include(c => c.Category).ToListAsync();
     }
 
     public async Task<Product> GetById(int id)
     {
-        return await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        return await _context.Products.Include(c => c.Category).Where(p => p.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<Product> GetByName(string name)
     {
-        return await _context.Products.Where(p => p.Name == name).FirstOrDefaultAsync();
+        return await _context.Products.Include(c => c.Category).Where(p => p.Name == name).FirstOrDefaultAsync();
     }
 
     public async Task<Product> Create(Product product)
