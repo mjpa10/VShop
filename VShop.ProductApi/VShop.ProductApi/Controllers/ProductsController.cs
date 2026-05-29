@@ -60,14 +60,11 @@ public class ProductsController : ControllerBase
             new { id = productDto.Id },
             productDto);
     }
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Put(int id, [FromBody] ProductDTO productDto)
+    [HttpPut]
+    public async Task<ActionResult> Put([FromBody] ProductDTO productDto)
     {
         if (productDto == null)
-            return BadRequest();
-
-        if (id != productDto.Id)
-            return BadRequest();
+            return BadRequest("Data invalid");
 
         await _productService.UpdateProduct(productDto);
 

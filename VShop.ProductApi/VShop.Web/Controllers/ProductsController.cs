@@ -50,4 +50,50 @@ public class ProductsController : Controller
         }
         return View(productVM);
      }
+
+    [HttpGet] 
+    public async Task<ActionResult> UpdateProduct(int id)
+    {
+        ViewBag.CategoryId = new SelectList(await  // 1 - Busca todas as categorias na API. // 2 - Cria um SelectList para popular o dropdown. // 3 - Envia os dados para a View utilizando ViewBag.
+            _categoryService.GetAllCategories(), "CategoryId", "Name");
+
+        var result = await _productService.FindProductById(id); // 4 - Busca os dados do produto a ser editado.
+        
+        if (result is null)
+            return View("Error");
+
+        return View(result); // 5 - Retorna a View preenchida com os dados do produto.
+    }
+    [HttpPost]
+    public async Task<ActionResult> UpdateProduct(ProductViewModel productVM)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _productService.UpdateProduct(productVM); // 3 - Envia os dados para a API.
+
+            if (result is not null)
+                return RedirectToAction(nameof(Index)); // 4 - Redireciona para a página Index após sucesso.
+        }
+        return View(productVM);
+    }
+    [HttpGet]
+    public async Task<ActionResult> DeleteProduct(int id)
+    {
+        var result = await _productService.FindProductById(id); // 1 - Busca os dados do produto a ser editado.
+
+        if (result is null)// 2 - Verifica se o produto existe.
+            return View("Error");
+
+        return View(result);
+    }
+    [HttpPost(), ActionName("DeleteProduct")]// ActionName("DeleteProduct") permite que o método POST utilize a mesma rota do método GET.
+    public async Task<ActionResult> DeleteConfirmed(int id)
+    {
+        var result = await _productService.DeleteProductById(id);// 1 - Envia a solicitação DELETE para a API.
+
+        if (!result)
+            return View("Error");
+
+        return RedirectToAction("Index");// 2 - Redireciona para Index.
+    }
 }
