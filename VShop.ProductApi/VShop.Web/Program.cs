@@ -12,6 +12,7 @@ builder.Services.AddHttpClient("ProductApi", c =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();//registro do serviço de acesso à API de produtos
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
