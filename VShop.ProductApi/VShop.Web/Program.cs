@@ -1,12 +1,17 @@
+using VShop.Web.Services.Contracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//registro do serviço de acesso à API de produtos
 builder.Services.AddHttpClient("ProductApi", c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["ServiceUri:ProductApi"]);
 });
+
+builder.Services.AddScoped<IProductService, ProductService>();//registro do serviço de acesso à API de produtos
 
 var app = builder.Build();
 
