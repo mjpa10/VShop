@@ -17,6 +17,6 @@ public class CartItem
 
     public Product Product { get; set; } = new Product();
 
-    public CartHeader CartHeader { get; set; } = new CartHeader();
+    //public CartHeader CartHeader { get; set; } = new CartHeader();
 
 }

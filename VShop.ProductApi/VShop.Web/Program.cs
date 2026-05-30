@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using VShop.Web.Services;
 using VShop.Web.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +13,15 @@ builder.Services.AddHttpClient("ProductApi", c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["ServiceUri:ProductApi"]);
 });
+//registro do serviço de acesso à API de Cart
+builder.Services.AddHttpClient("CartApi", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUri:CartApi"]);
+});
 
 builder.Services.AddScoped<IProductService, ProductService>();//registro do serviço de acesso à API de produtos
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddAuthentication(options =>
 {

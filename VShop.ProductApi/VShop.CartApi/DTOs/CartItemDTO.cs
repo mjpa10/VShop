@@ -14,6 +14,6 @@ public class CartItemDTO
 
     public ProductDTO Product { get; set; } = new ProductDTO();
 
-    public CartHeaderDTO CartHeader { get; set; } = new CartHeaderDTO();
+    //public CartHeaderDTO CartHeader { get; set; } = new CartHeaderDTO();
 
 }

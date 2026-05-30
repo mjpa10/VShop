@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
 using System.Xml.Linq;
 using VShop.Web.Models;
+using VShop.Web.Services.Contracts;
 
-namespace VShop.Web.Services.Contracts;
+namespace VShop.Web.Services;
 
 public class ProductService : IProductService
 {
