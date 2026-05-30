@@ -1,8 +1,10 @@
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VShop.IdentityServer.Configuration;
 using VShop.IdentityServer.Data;
 using VShop.IdentityServer.SeedDatabase;
+using VShop.IdentityServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ var builderIdentityServer = builder.Services.AddIdentityServer(options =>
 builderIdentityServer.AddDeveloperSigningCredential();
 
 builder.Services.AddScoped<IDatabaseSeedInitializer, DatabaseSeedInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileAppService>();// serve para incluir as claims do usuário no token de acesso. ou seja, para um admin ter as claims de admin, para um cliente ter as claims de cliente, etc.
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,7 +21,8 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductViewModel>>> Index()
     {
-        var result = await _productService.GetAllProducts();
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token"); // 1 - Obtém o token JWT do contexto HTTP atual.
+        var result = await _productService.GetAllProducts(tokenJwt);
 
         if (result is null)
             return View("Error");
@@ -30,8 +32,10 @@ public class ProductsController : Controller
     [HttpGet] // Método responsável por exibir a tela de criação de produtos.
     public async Task<ActionResult> CreateProduct()
     {
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
+
         ViewBag.CategoryId = new SelectList(await  // 1 - Busca todas as categorias na API. // 2 - Cria um SelectList para popular o dropdown. // 3 - Envia os dados para a View utilizando ViewBag.
-            _categoryService.GetAllCategories(), "CategoryId", "Name");
+            _categoryService.GetAllCategories(tokenJwt), "CategoryId", "Name");
 
         return View(); // 4 - Retorna a página CreateProduct.
     }
@@ -40,9 +44,12 @@ public class ProductsController : Controller
     [Authorize]
     public async Task<ActionResult> CreateProduct(ProductViewModel productVM)
     {
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
+
         if (ModelState.IsValid)
         {
-            var result = await _productService.CreateProduct(productVM); // 3 - Envia os dados para a API.
+           
+            var result = await _productService.CreateProduct(productVM, tokenJwt); // 3 - Envia os dados para a API.
 
             if (result is not null)
                 return RedirectToAction(nameof(Index)); // 4 - Redireciona para a página Index após sucesso.
@@ -50,7 +57,7 @@ public class ProductsController : Controller
         else
         {
             ViewBag.categoryId = new SelectList(await 
-                _categoryService.GetAllCategories(), "CategoryId", "Name"); // 5 - Caso haja erro, recria o dropdown de categorias.
+                _categoryService.GetAllCategories(tokenJwt), "CategoryId", "Name"); // 5 - Caso haja erro, recria o dropdown de categorias.
         }
         return View(productVM);
      }
@@ -58,10 +65,12 @@ public class ProductsController : Controller
     [HttpGet] 
     public async Task<ActionResult> UpdateProduct(int id)
     {
-        ViewBag.CategoryId = new SelectList(await  // 1 - Busca todas as categorias na API. // 2 - Cria um SelectList para popular o dropdown. // 3 - Envia os dados para a View utilizando ViewBag.
-            _categoryService.GetAllCategories(), "CategoryId", "Name");
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
 
-        var result = await _productService.FindProductById(id); // 4 - Busca os dados do produto a ser editado.
+        ViewBag.CategoryId = new SelectList(await  // 1 - Busca todas as categorias na API. // 2 - Cria um SelectList para popular o dropdown. // 3 - Envia os dados para a View utilizando ViewBag.
+            _categoryService.GetAllCategories(tokenJwt), "CategoryId", "Name");
+
+        var result = await _productService.FindProductById(id, tokenJwt); // 4 - Busca os dados do produto a ser editado.
         
         if (result is null)
             return View("Error");
@@ -72,9 +81,11 @@ public class ProductsController : Controller
     [Authorize]
     public async Task<ActionResult> UpdateProduct(ProductViewModel productVM)
     {
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
+
         if (ModelState.IsValid)
         {
-            var result = await _productService.UpdateProduct(productVM); // 3 - Envia os dados para a API.
+            var result = await _productService.UpdateProduct(productVM, tokenJwt); // 3 - Envia os dados para a API.
 
             if (result is not null)
                 return RedirectToAction(nameof(Index)); // 4 - Redireciona para a página Index após sucesso.
@@ -85,7 +96,9 @@ public class ProductsController : Controller
     [Authorize]
     public async Task<ActionResult> DeleteProduct(int id)
     {
-        var result = await _productService.FindProductById(id); // 1 - Busca os dados do produto a ser editado.
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
+
+        var result = await _productService.FindProductById(id, tokenJwt); // 1 - Busca os dados do produto a ser editado.
 
         if (result is null)// 2 - Verifica se o produto existe.
             return View("Error");
@@ -96,7 +109,9 @@ public class ProductsController : Controller
     [Authorize(Roles = Role.Admin)]
     public async Task<ActionResult> DeleteConfirmed(int id)
     {
-        var result = await _productService.DeleteProductById(id);// 1 - Envia a solicitação DELETE para a API.
+        var tokenJwt = await HttpContext.GetTokenAsync("access_token");
+
+        var result = await _productService.DeleteProductById(id, tokenJwt);// 1 - Envia a solicitação DELETE para a API.
 
         if (!result)
             return View("Error");

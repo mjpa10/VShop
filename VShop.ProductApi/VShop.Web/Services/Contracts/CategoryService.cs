@@ -13,9 +13,10 @@ public class CategoryService : ICategoryService
         _httpClientFactory = httpClientFactory;
         _options = new JsonSerializerOptions{ PropertyNameCaseInsensitive = true};
     }
-    public async Task<IEnumerable<CategoryViewModel>> GetAllCategories()
+    public async Task<IEnumerable<CategoryViewModel>> GetAllCategories(string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi"); // 1 - Cria um HttpClient configurado.
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);// Adiciona o token de autenticação ao cabeçalho da requisição.
 
         IEnumerable<CategoryViewModel> categories;
 
