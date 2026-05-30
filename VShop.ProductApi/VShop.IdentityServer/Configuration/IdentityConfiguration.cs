@@ -44,14 +44,14 @@ public class IdentityConfiguration
                 ClientId = "vshop",
                 ClientSecrets = { new Secret("dsfdss#fe1234FD".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code, //via codigo
-                RedirectUris= { "https://localhost:7165/sigin-oidc"}, //login
-                PostLogoutRedirectUris = { "https://localhost:7165/signout-callback-oidc" }, //logout
+                RedirectUris= { "https://localhost:50104/signin-oidc"}, //login
+                PostLogoutRedirectUris = { "https://localhost:50104/signout-callback-oidc" }, //logout
                 AllowedScopes = new List<string>
                 {
                    IdentityServerConstants.StandardScopes.OpenId,
                    IdentityServerConstants.StandardScopes.Profile,
                    IdentityServerConstants.StandardScopes.Email,
-                    "Vshop"
+                    "vshop"
                 }
             }
         };

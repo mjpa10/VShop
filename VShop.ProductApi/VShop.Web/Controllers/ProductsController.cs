@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using VShop.Web.Models;
+using VShop.Web.Roles;
 using VShop.Web.Services.Contracts;
 
 namespace VShop.Web.Controllers;
@@ -34,6 +37,7 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult> CreateProduct(ProductViewModel productVM)
     {
         if (ModelState.IsValid)
@@ -65,6 +69,7 @@ public class ProductsController : Controller
         return View(result); // 5 - Retorna a View preenchida com os dados do produto.
     }
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult> UpdateProduct(ProductViewModel productVM)
     {
         if (ModelState.IsValid)
@@ -77,6 +82,7 @@ public class ProductsController : Controller
         return View(productVM);
     }
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult> DeleteProduct(int id)
     {
         var result = await _productService.FindProductById(id); // 1 - Busca os dados do produto a ser editado.
@@ -87,6 +93,7 @@ public class ProductsController : Controller
         return View(result);
     }
     [HttpPost(), ActionName("DeleteProduct")]// ActionName("DeleteProduct") permite que o método POST utilize a mesma rota do método GET.
+    [Authorize(Roles = Role.Admin)]
     public async Task<ActionResult> DeleteConfirmed(int id)
     {
         var result = await _productService.DeleteProductById(id);// 1 - Envia a solicitação DELETE para a API.

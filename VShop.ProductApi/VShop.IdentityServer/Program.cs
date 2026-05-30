@@ -26,6 +26,7 @@ var builderIdentityServer = builder.Services.AddIdentityServer(options =>
     options.Events.RaiseFailureEvents = true;
     options.Events.RaiseSuccessEvents = true;
     options.EmitStaticAudienceClaim = true;
+    options.PushedAuthorization.Required = false;
 }).AddInMemoryIdentityResources(
     IdentityConfiguration.IdentityResources)
     .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
