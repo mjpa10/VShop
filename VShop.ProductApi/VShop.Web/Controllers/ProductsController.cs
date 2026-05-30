@@ -9,6 +9,7 @@ using VShop.Web.Services.Contracts;
 
 namespace VShop.Web.Controllers;
 
+[Authorize(Roles = Role.Admin)]
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
@@ -41,7 +42,6 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<ActionResult> CreateProduct(ProductViewModel productVM)
     {
         var tokenJwt = await HttpContext.GetTokenAsync("access_token");
@@ -78,7 +78,6 @@ public class ProductsController : Controller
         return View(result); // 5 - Retorna a View preenchida com os dados do produto.
     }
     [HttpPost]
-    [Authorize]
     public async Task<ActionResult> UpdateProduct(ProductViewModel productVM)
     {
         var tokenJwt = await HttpContext.GetTokenAsync("access_token");
@@ -93,7 +92,6 @@ public class ProductsController : Controller
         return View(productVM);
     }
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult> DeleteProduct(int id)
     {
         var tokenJwt = await HttpContext.GetTokenAsync("access_token");
@@ -106,7 +104,6 @@ public class ProductsController : Controller
         return View(result);
     }
     [HttpPost(), ActionName("DeleteProduct")]// ActionName("DeleteProduct") permite que o método POST utilize a mesma rota do método GET.
-    [Authorize(Roles = Role.Admin)]
     public async Task<ActionResult> DeleteConfirmed(int id)
     {
         var tokenJwt = await HttpContext.GetTokenAsync("access_token");
