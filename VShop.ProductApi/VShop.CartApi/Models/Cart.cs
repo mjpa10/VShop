@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VShop.CartApi.DTOs;
 using VShop.CartApi.Models;
 
 namespace WingtipToys.Models;
