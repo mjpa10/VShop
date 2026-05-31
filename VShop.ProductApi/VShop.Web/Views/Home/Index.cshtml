@@ -1,25 +1,35 @@
 ﻿@model IEnumerable<VShop.Web.Models.ProductViewModel>
 <link rel="stylesheet" href="/css/product.css" asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&display=swap" rel="stylesheet" />
 
 <form>
-    <div class="container row">
-        @foreach (var product in Model)
-        {
-            <div class="col-md-3 mb-2">
-                <a href="/Home/ProductDetails/@product.Id">
-                    <div class="card">
-                        <img class="img-thumbnail" src="/images/@product.CategoryName/@product.ImageURL">
-                        <div class="card-body">
-                            <h5 class="card-title mb-2">
-                                @product.Name   
-                            </h5>
-                            <p class="cart-text text-black">
-                                <b>@product.Price.ToString("C")</b>
-                            </p>
+    <div class="container py-4">
+        <div class="catalog-header">
+            <span class="catalog-title">Catálogo</span>
+            <span class="catalog-count">@Model.Count() produtos</span>
+        </div>
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <a href="/Home/ProductDetails/@product.Id" class="product-link">
+                        <div class="card h-100">
+                            <div class="product-img-wrap">
+                                <img src="/images/@product.CategoryName/@product.ImageURL" alt="@product.Name" />
+                                <span class="product-badge">@product.CategoryName</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="product-category">@product.CategoryName</p>
+                                <h6 class="product-name">@product.Name</h6>
+                                <div class="product-footer">
+                                    <span class="product-price">@product.Price.ToString("C")</span>
+                                    <div class="add-btn">+</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        }
+                    </a>
+                </div>
+            }
+        </div>
     </div>
 </form>

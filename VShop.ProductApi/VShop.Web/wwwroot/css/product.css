@@ -1,18 +1,109 @@
-﻿a {
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;700&family=DM+Sans:wght@400;500&display=swap');
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.catalog-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9e9e9;
+}
+
+.catalog-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #1a1a1a;
+}
+
+.catalog-count {
+    font-size: 13px;
+    color: #999;
+}
+
+.product-link {
     text-decoration: none;
+    color: inherit;
+    display: block;
 }
-a:hover .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        transition: box-shadow 0.3s ease-in-out;
-}
+
 .card {
-    transition: box-shadow 0.3s ease-in-out;
+    border: 1px solid #efefef;
+    border-radius: 12px;
     overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
 }
-a:hover img {
-    transform: scale(1.07);
-    transition: 0.5s ease-in-out;
+
+.product-link:hover .card {
+    border-color: #ccc;
+    transform: translateY(-3px);
+    box-shadow: none;
 }
-img {
-    transition: 0.5s ease-in-out;
+
+.product-img-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f8f8f8;
 }
+
+    .product-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+.product-link:hover .product-img-wrap img {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: white;
+    color: #666;
+    border: 1px solid #efefef;
+}
+
+.card-body {
+    padding: 12px 14px 14px;
+}
+
+.product-category {
+    font-size: 11px;
+    font-weight: 500;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+}
+
+.product-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-price {
+    font-size: 15px;
+    fon
