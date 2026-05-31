@@ -1,4 +1,6 @@
 ﻿@model CartViewModel
+<link rel="stylesheet" href="/css/cart.css" asp-append-version="true" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 @if (Model is not null && Model.CartItems.Count() > 0)
 {
@@ -9,124 +11,95 @@
         <input asp-for="CartHeader.Discount" hidden />
         <input asp-for="CartHeader.TotalAmount" hidden />
         <input asp-for="CartItems" hidden />
-        <div>
-            <span style="font-size:30px;">Billing Address</span>
-            <br />
-        </div>
-        <div class="border mt-2">
-            <div class="container row">
-                <div class="col-6">
-                    <div class="row">
-                        <div class="row">
-                            <div class="col-6">
-                                <i class="fa fa-user"></i> &nbsp;
-                                <label class="col-form-label">First Name:</label>
-                                <input asp-for="CartHeader.FirstName" class="form-control" />
-                            </div>
-                            <div class="col-6">
-                                <label class="col-form-label">Last Name:</label>
-                                <input asp-for="CartHeader.LastName" class="form-control" />
-                            </div>
+
+        <div class="co-wrap">
+            <div>
+                <p class="co-title">Dados de entrega</p>
+
+                <div class="co-section">
+                    <p class="co-section-label">
+                        <i class="fas fa-user" style="font-size:13px"></i> Nome
+                    </p>
+                    <div class="co-row">
+                        <div class="co-field">
+                            <label class="co-label">Primeiro nome</label>
+                            <input asp-for="CartHeader.FirstName" class="co-input" placeholder="" required />
                         </div>
-                        <div class="col-12">
-                            <i class="fa fa-envelope"></i> &nbsp;
-                            <label class="col-form-label">E-mail:</label>
-                            <input asp-for="CartHeader.Email" class="form-control" />
-                        </div>
-                        <div class="col-12">
-                            <i class="fa fa-phone"></i> &nbsp;
-                            <label class="col-form-label">Telephone:</label>
-                            <input asp-for="CartHeader.Telephone" class="form-control" />
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <i class="fa fa-credit-card"></i> &nbsp;
-                                <label class="col-form-label">Card Number:</label>
-                                <input asp-for="CartHeader.CardNumber" class="form-control" />
-                            </div>
-                            <div class="col-6">
-                                <label class="col-form-label">Name on Card:</label>
-                                <input asp-for="CartHeader.NameOnCard" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="col-form-label">CVV:</label>
-                                <input asp-for="CartHeader.CVV" class="form-control" />
-                            </div>
-                            <div class="col-6 pb-4">
-                                <label class="col-form-label">Expire Date:</label>
-                                <input asp-for="CartHeader.ExpireMonthYear" placeholder="MMYY" class="form-control" />
-                            </div>
+                        <div class="co-field">
+                            <label class="co-label">Sobrenome</label>
+                            <input asp-for="CartHeader.LastName" class="co-input" placeholder="" required />
                         </div>
                     </div>
                 </div>
 
-                <div class="col-6">
-                    <div style="font-size:25px;color:black">
-                        <i class="fa fa-shopping-basket"></i> &nbsp; Your Basket
+                <div class="co-section">
+                    <p class="co-section-label">
+                        <i class="fas fa-envelope" style="font-size:13px"></i> Contato
+                    </p>
+                    <div class="co-field">
+                        <label class="co-label">E-mail</label>
+                        <input asp-for="CartHeader.Email" class="co-input" placeholder="exemplo@email.com" required />
                     </div>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <div class="d-none d-lg-block">
-                                <div class="row">
-                                    <div class="col-6">
-                                        Product Details
-                                    </div>
-                                    <div class="col-3">
-                                        Price
-                                    </div>
-                                    <div class="col-3">
-                                        Quantity
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="co-field">
+                        <label class="co-label">Telefone</label>
+                        <input asp-for="CartHeader.Telephone" class="co-input" placeholder="(81) 99999-9999" required />
+                    </div>
+                </div>
 
-                            <hr />
-
-                            @foreach (var item in Model.CartItems)
-                            {
-                                <div class="row h-100">
-                                    <div class="col-6">
-                                        <span style="font-size:20px;">@item.Product.Name</span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span style="font-size:17px;">@string.Format("{0:c}", item.Product.Price)</span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span style="font-size:17px;">
-                                            @item.Quantity
-                                        </span>
-                                    </div>
-
-                                </div>
-                                <hr />
-                            }
-                            <div class="row">
-                                <div class="col-12 pr-4" style="font-size:20px;color:blue">
-                                    Total Amount: @string.Format("{0:c}", Model.CartHeader.TotalAmount)<br />
-                                    @if (Model.CartHeader.Discount > 0)
-                                    {
-                                        <span style="font-size:20px;color:red">
-                                            Discount : @string.Format("{0:P}", Model.CartHeader.Discount/100)
-                                        </span>
-                                    }
-                                </div>
-                            </div>
+                <div class="co-section">
+                    <p class="co-section-label">
+                        <i class="fas fa-credit-card" style="font-size:13px"></i> Pagamento
+                    </p>
+                    <div class="co-row">
+                        <div class="co-field">
+                            <label class="co-label">Número do cartão</label>
+                            <input asp-for="CartHeader.CardNumber" class="co-input" placeholder="" required />
                         </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-info form-control">
-                                        <span style="font-size:25px">Continue to Checkout</span>
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="co-field">
+                            <label class="co-label">Nome no cartão</label>
+                            <input asp-for="CartHeader.NameOnCard" class="co-input" placeholder="" required />
+                        </div>
+                    </div>
+                    <div class="co-row">
+                        <div class="co-field">
+                            <label class="co-label">CVV</label>
+                            <input asp-for="CartHeader.CVV" class="co-input" placeholder="" required />
+                        </div>
+                        <div class="co-field">
+                            <label class="co-label">Validade</label>
+                            <input asp-for="CartHeader.ExpireMonthYear" class="co-input" placeholder="MM/AA" maxlength="5" required />
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="basket-wrap">
+                <p class="basket-title">Resumo do pedido</p>
+
+                @foreach (var item in Model.CartItems)
+                {
+                    <div class="basket-item">
+                        <span class="basket-item-name">@item.Product.Name</span>
+                        <span class="basket-item-price">@item.Product.Price.ToString("C")</span>
+                        <span class="basket-item-qty">×@item.Quantity</span>
+                    </div>
+                }
+
+                @if (Model.CartHeader.Discount > 0)
+                {
+                    <div class="basket-discount">
+                        <span class="basket-discount-label">Desconto (@Model.CartHeader.CouponCode)</span>
+                        <span class="basket-discount-value">− @string.Format("{0:P}", Model.CartHeader.Discount / 100)</span>
+                    </div>
+                }
+
+                <div class="basket-total-row">
+                    <span class="basket-total-label">Total</span>
+                    <span class="basket-total-amount">@Model.CartHeader.TotalAmount.ToString("C")</span>
+                </div>
+
+                <button type="submit" class="btn-checkout">Confirmar pedido</button>
+            </div>
         </div>
     </form>
 }
-

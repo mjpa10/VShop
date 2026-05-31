@@ -1,36 +1,21 @@
 ﻿@model IEnumerable<VShop.Web.Models.ProductViewModel>
-<div>
-    <h2>Products</h2>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <div>
-            <div class="pull-left">
-                <a asp-action="CreateProduct" class="btn btn-primary">
-                    <span title="Create New" class="fas fa-plus"></span> New Product
-                </a>
-            </div>
-        </div>
+<link rel="stylesheet" href="/css/management.css" asp-append-version="true" />
+
+<div class="mgmt-wrap">
+    <div class="mgmt-header">
+        <span class="mgmt-title">Gestão de produtos</span>
+        <a asp-action="CreateProduct" class="btn-new">
+            <i class="fas fa-plus" style="font-size:13px"></i> Novo produto
+        </a>
     </div>
-</div>
-<br />
-<div class="panel panel-default">
-    <table class="table table-striped">
+
+    <table class="mgmt-table">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                 <th>
-                    @Html.DisplayNameFor(model => model.CategoryName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
+                <th>@Html.DisplayNameFor(m => m.Name)</th>
+                <th>@Html.DisplayNameFor(m => m.CategoryName)</th>
+                <th>@Html.DisplayNameFor(m => m.Description)</th>
+                <th>@Html.DisplayNameFor(m => m.Price)</th>
                 <th></th>
             </tr>
         </thead>
@@ -38,25 +23,19 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td class="td-name">@item.Name</td>
+                    <td><span class="td-badge">@item.CategoryName</span></td>
+                    <td class="td-desc">@item.Description</td>
+                    <td class="td-price">@item.Price.ToString("C")</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        <a asp-action="UpdateProduct" asp-route-id="@item.Id" title="Edita" class="btn btn-warning">
-                            <span class="fas fa-edit"></span>
-                        </a>
-                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" title="Deleta" class="btn btn-danger">
-                            <span class="fas fa-trash-alt"></span>
-                        </a>
+                        <div class="td-actions">
+                            <a asp-action="UpdateProduct" asp-route-id="@item.Id" class="btn-edit" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn-del" title="Deletar">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }

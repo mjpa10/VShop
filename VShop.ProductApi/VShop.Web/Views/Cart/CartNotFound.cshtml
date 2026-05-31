@@ -1,11 +1,12 @@
-﻿@model string
+﻿<link rel="stylesheet" href="/css/cart.css" asp-append-version="true" />
 
-<h2>
-    <p class="text-danger">
-      @Html.ValidationMessage("CartNotFound")
-    </p>
-</h2>
-
-<a class="page-link" asp-area="" asp-controller="Home" asp-action="Index">
-     <h3>Return to Shopping</h3> 
-</a>
+<div class="empty-wrap">
+    <div class="empty-icon">
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+    <h1 class="empty-title">Carrinho vazio</h1>
+    <p class="empty-sub">Você ainda não adicionou nenhum item. Que tal explorar nossos produtos?</p>
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn-shop">
+        ← Voltar às compras
+    </a>
+</div>

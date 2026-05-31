@@ -1,28 +1,51 @@
 ﻿@model LoggedOutViewModel
+<link rel="stylesheet" href="~/css/Loggout.css" asp-append-version="true" />
 
-@{ 
-    // set this so the layout rendering sees an anonymous user
+@{
     ViewData["signed-out"] = true;
 }
 
-<div class="logged-out-page">
-    <h1>
-        Logout
-        <small>You are now logged out</small>
-    </h1>
+<div class="logout-container">
+    <div class="logout-card">
 
-    @if (Model.PostLogoutRedirectUri != null)
-    {
-        <div>
-            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
-            <span>@Model.ClientName</span> application.
+        <div class="logout-icon">
+                ✓
         </div>
-    }
 
-    @if (Model.SignOutIframeUrl != null)
-    {
-        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
-    }
+        <div class="logout-badge">
+            ✓ Sessão encerrada com segurança
+        </div>
+
+        <h1>Você foi desconectado</h1>
+
+        <p class="logout-message">
+            Sua sessão foi finalizada. Obrigado por usar nosso serviço.
+        </p>
+
+        <hr />
+
+        @if (Model.PostLogoutRedirectUri != null)
+        {
+            <p class="return-text">
+                Para voltar ao aplicativo
+                <strong>@Model.ClientName</strong>,
+                clique abaixo:
+            </p>
+
+            <a href="@Model.PostLogoutRedirectUri" class="btn-return">
+                Voltar para @Model.ClientName
+            </a>
+        }
+
+        @if (Model.SignOutIframeUrl != null)
+        {
+            <iframe width="0"
+                    height="0"
+                    class="signout"
+                    src="@Model.SignOutIframeUrl">
+            </iframe>
+        }
+    </div>
 </div>
 
 @section scripts

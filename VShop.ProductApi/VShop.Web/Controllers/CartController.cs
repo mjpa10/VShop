@@ -46,20 +46,10 @@ public class CartController : Controller
     private async Task<CartViewModel?> GetCartByUser()
     {
         var cart = await _cartService.GetCartByUserIdAsync(GetCartByUserId(), await GetAcessToken());
-        var teste = await _couponService.GetCouponByCodeAsync(cart.CartHeader.CouponCode, await GetAcessToken());
 
-        Console.WriteLine($">>> CouponCode: {cart.CartHeader.CouponCode}");
-        Console.WriteLine($">>> Coupon: {teste?.CouponCode ?? "NULL"}");
-        Console.WriteLine($">>> Discount: {teste?.Discount}");
+        if (cart?.CartHeader is null)
+            return null;
 
-        if (teste is not null)
-        {
-            cart.CartHeader.Discount = teste.Discount;
-            Console.WriteLine($">>> Discount aplicado: {cart.CartHeader.Discount}");
-        }
-
-        if (cart?.CartHeader is not null)
-        {
             if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
             {
                 var coupon = await _couponService.GetCouponByCodeAsync(cart.CartHeader.CouponCode, await GetAcessToken());
@@ -69,12 +59,15 @@ public class CartController : Controller
                     cart.CartHeader.Discount = coupon.Discount;
                 }
             }
-            foreach (var item in cart.CartItems)
+            if (cart.CartItems is not null && cart.CartItems.Any())
             {
-                cart.CartHeader.TotalAmount += (item.Product.Price * item.Quantity);
+                foreach (var item in cart.CartItems)
+                {
+                    cart.CartHeader.TotalAmount += (item.Product.Price * item.Quantity);
+                }
+                cart.CartHeader.TotalAmount -= (cart.CartHeader.TotalAmount * cart.CartHeader.Discount) / 100;
             }
-            cart.CartHeader.TotalAmount -= (cart.CartHeader.TotalAmount * cart.CartHeader.Discount) / 100;
-        }
+ 
         return cart;
     }
     private string GetCartByUserId()
@@ -137,6 +130,8 @@ public class CartController : Controller
     [HttpGet]
     public IActionResult CheckoutCompleted()
     {
+        var orderNumber = $"{Random.Shared.Next(100, 999)}-{(char)Random.Shared.Next(65, 90)}{Random.Shared.Next(10, 99)}";
+        ViewBag.OrderNumber = orderNumber;
         return View();
     }
 }

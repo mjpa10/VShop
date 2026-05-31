@@ -1,54 +1,73 @@
 ﻿@model VShop.Web.Models.ProductViewModel
 
-<h3>Update Product</h3>
+<link rel="stylesheet" href="/css/management.css" asp-append-version="true" />
 
-<hr />
-<form asp-action="UpdateProduct">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="UpdateProduct" class="form-wrap">
+    <h1 class="form-title">Editar produto</h1>
+
+    <div asp-validation-summary="ModelOnly" class="form-error"></div>
+
     <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+
+    <div class="form-field">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-input" />
+        <span asp-validation-for="Name" class="form-error"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
+    <div class="form-field">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-textarea"></textarea>
+        <span asp-validation-for="Description" class="form-error"></span>
     </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="ImageURL" class="control-label"></label>
-            <input asp-for="ImageURL" class="form-control" />
-            <span asp-validation-for="ImageURL" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-6">
-            <img src="~/images/@Model.CategoryName/@Model.ImageURL" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-sm-4">
-            <label asp-for="Price" class="control-label"></label>
-            <input asp-for="Price" asp-format="{0:N2}" class="form-control" />
-            <span asp-validation-for="Price" class="text-danger"></span>
+    <div class="form-row">
+        <div class="form-field">
+            <label asp-for="ImageURL" class="form-label"></label>
+            <input asp-for="ImageURL" class="form-input" />
+            <span asp-validation-for="ImageURL" class="form-error"></span>
         </div>
 
-        <div class="form-group col-sm-4">
-            <label asp-for="Stock" class="control-label"></label>
-            <input asp-for="Stock" class="form-control" />
-            <span asp-validation-for="Stock" class="text-danger"></span>
+        <div class="form-field">
+            <label class="form-label">Pré-visualização</label>
+
+            <div class="product-preview">
+                <img src="~/images/@Model.CategoryName/@Model.ImageURL"
+                     alt="@Model.Name" />
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
-        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" asp-format="{0:N2}" class="form-input" />
+            <span asp-validation-for="Price" class="form-error"></span>
+        </div>
+
+        <div class="form-field">
+            <label asp-for="Stock" class="form-label"></label>
+            <input asp-for="Stock" class="form-input" />
+            <span asp-validation-for="Stock" class="form-error"></span>
+        </div>
     </div>
 
-    <div class="form-group" style="padding-top: 10px">
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-info">Back to List</a>
+    <div class="form-field">
+        <label asp-for="CategoryId" class="form-label"></label>
+        <select asp-for="CategoryId"
+                class="form-select"
+                asp-items="ViewBag.CategoryId">
+        </select>
+        <span asp-validation-for="CategoryId" class="form-error"></span>
+    </div>
+
+    <div class="form-actions">
+        <a asp-action="Index" class="btn-back-form">
+            ← Voltar
+        </a>
+
+        <button type="submit" class="btn-submit">
+            Salvar alterações
+        </button>
     </div>
 </form>
