@@ -139,9 +139,29 @@ public class CartService : ICartService
         return false;
     }
 
-    public Task<CartViewModel> CheckoutAsync(CartHeaderViewModel cartHeader, string token)
+    public async Task<CartHeaderViewModel> CheckoutAsync(CartHeaderViewModel cartHeaderVM, string token)
     {
-        throw new NotImplementedException();
+        var client = _clientFactory.CreateClient("CartApi");
+        PutTokenInHeaderAuthorization(token, client);
+
+        StringContent content = new StringContent(JsonSerializer.Serialize(cartHeaderVM), Encoding.UTF8, "application/json");
+
+        using (var response = await client.PostAsync($"{apiEndpoint}/checkout/", content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                cartHeaderVM = await JsonSerializer.
+                    DeserializeAsync<CartHeaderViewModel>(apiResponse, _options);
+            }
+            else 
+            {
+                return null;
+             }
+            return cartHeaderVM;
+        }
+        
     }
 
     private void PutTokenInHeaderAuthorization(string token, HttpClient client)

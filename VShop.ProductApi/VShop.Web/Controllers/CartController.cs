@@ -113,4 +113,30 @@ public class CartController : Controller
         }
         return RedirectToAction(nameof(Index)); ;
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Checkout()
+    {
+        CartViewModel? cartVM = await GetCartByUser();
+        return View(cartVM);
+    }
+    [HttpPost]
+    public async Task<IActionResult> Checkout(CartViewModel cartViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _cartService.CheckoutAsync(cartViewModel.CartHeader, await GetAcessToken());
+
+            if (result is not null)
+            {
+                return RedirectToAction(nameof(CheckoutCompleted));
+            }
+        }
+        return View(cartViewModel);
+    }
+    [HttpGet]
+    public IActionResult CheckoutCompleted()
+    {
+        return View();
+    }
 }

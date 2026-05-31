@@ -1,17 +1,20 @@
-﻿namespace VShop.Web.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class CartHeaderViewModel
+namespace VShop.CartApi.DTOs;
+
+public class CheckoutHeaderDTO
 {
     public int Id { get; set; }
+    [Required(ErrorMessage = "UserId is Required")]
     public string UserId { get; set; } = string.Empty;
     public string CouponCode { get; set; } = string.Empty;
     public decimal TotalAmount { get; set; } = 0.00m;
 
-    //receber o desconto do cupom
+    //desconto
     public decimal Discount { get; set; } = 0.00m;
 
     //checkout
-    public string FirstName { get; set; } =string.Empty;
+    public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public DateTime DateTime { get; set; }
     public string Telephone { get; set; } = string.Empty;
@@ -21,4 +24,7 @@ public class CartHeaderViewModel
     public string CVV { get; set; } = string.Empty;
     public string ExpireMonthYear { get; set; } = string.Empty;
 
+    //
+    public int CartTotalItens { get; set; }
+    public IEnumerable<CartItemDTO>? CartItems { get; set; }
 }
