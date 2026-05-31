@@ -27,6 +27,7 @@ public class HomeController : Controller
 
         return View(products);
     }
+
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<ProductViewModel>> ProductDetails(int id)
@@ -38,8 +39,9 @@ public class HomeController : Controller
 
         return View(product);
     }
+
     [HttpPost]
-    [ActionName("ProductsDetail")]
+    [ActionName("ProductDetails")]
     [Authorize]
     public async Task<ActionResult<ProductViewModel>> ProductDetailsPost(ProductViewModel productVM)
     {

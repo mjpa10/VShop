@@ -57,5 +57,16 @@ public class AppDbContext : DbContext
         mb.Entity<CartHeader>().
            Property(c => c.CouponCode).
               HasMaxLength(100);
+
+        mb.Entity<CartHeader>()
+        .Property(c => c.Id)
+        .ValueGeneratedOnAdd();
+
+        mb.Entity<CartItem>()
+            .HasKey(c => c.Id);
+
+        mb.Entity<CartItem>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd(); 
     }
 }
