@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using VShop.Web.Models;
 using VShop.Web.Services.Contracts;
 
@@ -17,7 +18,7 @@ public class CategoryService : ICategoryService
     public async Task<IEnumerable<CategoryViewModel>> GetAllCategories(string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi"); // 1 - Cria um HttpClient configurado.
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);// Adiciona o token de autenticação ao cabeçalho da requisição.
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);// Adiciona o token de autenticação ao cabeçalho da requisição.
 
         IEnumerable<CategoryViewModel> categories;
 

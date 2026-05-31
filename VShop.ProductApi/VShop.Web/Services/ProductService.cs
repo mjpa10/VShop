@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Xml.Linq;
 using VShop.Web.Models;
 using VShop.Web.Services.Contracts;
@@ -22,7 +23,7 @@ public class ProductService : IProductService
     public async Task<IEnumerable<ProductViewModel>> GetAllProducts(string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi"); // 1 - Cria um HttpClient configurado.
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         using (var response = await client.GetAsync(apiEndpoint))// 2 - Realiza uma requisição GET.
         {
@@ -41,7 +42,7 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> FindProductById(int id, string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 
         using (var response = await client.GetAsync(apiEndpoint + "id/" + id))// - Realiza uma requisição GET pelo Id.
@@ -60,7 +61,7 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> FindProductByName(string name, string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         using (var response = await client.GetAsync(apiEndpoint + "name/" + name))
         {
@@ -78,7 +79,7 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> CreateProduct(ProductViewModel productVM, string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         StringContent content = new StringContent(
             JsonSerializer.Serialize(productVM), 
@@ -100,7 +101,7 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> UpdateProduct(ProductViewModel productVM, string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         ProductViewModel productUpdated = new ProductViewModel();
 
@@ -120,7 +121,7 @@ public class ProductService : IProductService
     public async Task<bool> DeleteProductById(int id, string token)
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         using (var response = await client.DeleteAsync(apiEndpoint + id))
         {

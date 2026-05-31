@@ -155,13 +155,31 @@ public class CartRepository : ICartRepository
         };
     }
 
-    public Task<bool> ApplyCouponsAsync(string userId, string couponCode)
+    public async Task<bool> ApplyCouponsAsync(string userId, string couponCode)
     {
-        throw new NotImplementedException();
+        var cartHeaderApplyCoupon = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+
+        if (cartHeaderApplyCoupon is not null)
+        {
+            cartHeaderApplyCoupon.CouponCode = couponCode;
+            _context.CartHeaders.Update(cartHeaderApplyCoupon);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        return false;
     }
 
-    public Task<bool> DeleteCouponsAsync(string userId)
+    public async Task<bool> DeleteCouponsAsync(string userId)
     {
-        throw new NotImplementedException();
+        var cartHeaderApplyCoupon = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+
+        if (cartHeaderApplyCoupon is not null)
+        {
+            cartHeaderApplyCoupon.CouponCode = string.Empty;
+            _context.CartHeaders.Update(cartHeaderApplyCoupon);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        return false;
     }
 }
