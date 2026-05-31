@@ -29,6 +29,9 @@ public class CartRepository : ICartRepository
             CartHeader = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId)
         };
 
+        if (cart.CartHeader is null)
+            return null;
+
         //obter os iutens do carrinho
         cart.CartItems = _context.CartItems.Where(c => c.CartHeaderId == cart.CartHeader.Id).Include(c => c.Product);
 
@@ -44,14 +47,16 @@ public class CartRepository : ICartRepository
             int total = _context.CartItems.Where(c => c.CartHeaderId == cartItem.CartHeaderId).Count();
 
             _context.CartItems.Remove(cartItem);
+            await _context.SaveChangesAsync();
 
             if (total == 1)
             {
                 var cartHeaderRemove = await _context.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartItem.CartHeaderId);
                 _context.CartHeaders.Remove(cartHeaderRemove);
-            }
-            await _context.SaveChangesAsync();
 
+                await _context.SaveChangesAsync();
+            }
+            
             return true;
         }
         catch (Exception)
